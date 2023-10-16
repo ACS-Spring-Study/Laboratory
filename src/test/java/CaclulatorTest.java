@@ -16,7 +16,7 @@ public class CaclulatorTest {
 
     @Test
     void mulTest(){
-        Assertions.assertEquals(25, myCalc.add(5, 5));
+        Assertions.assertEquals(25, myCalc.mul(5, 5));
     }
 
     @Test
