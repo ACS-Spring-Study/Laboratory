@@ -1,7 +1,7 @@
 public class Calculator implements Calculable{
     @Override
     public int add(int a, int b) {
-        return 0;
+        return a + b;
     }
 
     @Override
