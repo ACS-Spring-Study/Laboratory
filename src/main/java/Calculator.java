@@ -16,7 +16,7 @@ public class Calculator implements Calculable{
 
     @Override
     public int div(int a, int b) {
-        return 0;
+        return a / b;
     }
 
     @Override
