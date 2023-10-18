@@ -1,3 +1,5 @@
+package Calc;
+
 public class Calculator implements Calculable{
     @Override
     public int add(int a, int b) {
