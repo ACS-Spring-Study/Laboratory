@@ -1,4 +1,3 @@
-import PasswordStrength.PasswordStrength;
 import PasswordStrength.PasswordValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

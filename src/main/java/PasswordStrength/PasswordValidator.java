@@ -11,6 +11,8 @@ public class PasswordValidator {
         return this.password;
     }
 
+    public String setPassword(String password) { this.password = password; }
+
     public PasswordStrength check(){
         return PasswordStrength.WEAK;
     }
