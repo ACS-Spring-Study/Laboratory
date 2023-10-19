@@ -31,32 +31,32 @@ public class PasswordValidatorTest {
   @Test
   @DisplayName("비밀번호 유효성 검사 중에 두 가지를 통과하는 경우에 대한 테스트")
   void 유효성_검사_2개_통과() {
-    // 1번 조건과 2번 조건을 만족
+    // 문자열의 길이가 8이고, 숫자가 포함된 비밀번호의 강도는 NORMAL이다.
     pv.setPassword("abcde012");
     Assertions.assertEquals(PasswordStrength.NORMAL, pv.check());
 
-    // 1번 조건과 3번 조건을 만족
+    // 문자열의 길이가 8이고, 숫자가 포함된 비밀번호의 강도는 NORMAL이다.
     pv.setPassword("abcdEabC");
     Assertions.assertEquals(PasswordStrength.NORMAL, pv.check());
 
-    // 2번 조건과 3번 조건을 만족
-    pv.setPassword("ABCDE012");
+    // 문자열의 길이가 7이고, 숫자와 대문자가 포함되는 비밀번호의 강도는 NORMAL이다.
+    pv.setPassword("ABCDE01");
     Assertions.assertEquals(PasswordStrength.NORMAL, pv.check());
   }
 
   @Test
   @DisplayName("비밀번호 유효성 검사 중에 한 가지를 통과하는 경우에 대한 테스트")
   void 유효성_검사_1개_통과() {
-    // 1번 조건만 만족
+    // 문자열의 길이가 8인 비밀번호의 강도는 WEAK이다.
     pv.setPassword("abcdefgh");
     Assertions.assertEquals(PasswordStrength.WEAK, pv.check());
 
-    // 2번 조건만 만족
-    pv.setPassword("12345678");
+    // 문자열의 길이가 7이고, 숫자로만 이루어진 비밀번호의 강도는 WEAK이다.
+    pv.setPassword("1234567");
     Assertions.assertEquals(PasswordStrength.WEAK, pv.check());
 
-    // 3번 조건만 만족
-    pv.setPassword("ABCDEFGH");
+    // 문자열의 길이가 7이고, 영어 대문자로만 이루어진 비밀번호의 강도는 WEAK이다.
+    pv.setPassword("ABCDEFG");
     Assertions.assertEquals(PasswordStrength.WEAK, pv.check());
   }
 }
