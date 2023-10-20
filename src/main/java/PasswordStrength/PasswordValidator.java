@@ -44,7 +44,6 @@ public class PasswordValidator {
     // 암호는 대문자를 포함한다.
     if (containsUpper()) caseCnt++;
 
-    if (caseCnt == 1) return PasswordStrength.WEAK;
     if (caseCnt == 2) return PasswordStrength.NORMAL;
     if (caseCnt == 3) return PasswordStrength.STRONG;
     else return PasswordStrength.WEAK;
