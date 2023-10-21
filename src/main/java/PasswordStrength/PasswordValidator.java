@@ -21,10 +21,6 @@ public class PasswordValidator {
 
     // 문자열 길이
     int PasswordLength = password.length();
-    // 숫자 포함 확인용 변수
-    int checkDigit = 0;
-    // 대문자 포함 확인용 변수
-    int checkUpper = 0;
 
     // 문자열 길이 8이상인지 확인
     if (PasswordLength >= 8) {
