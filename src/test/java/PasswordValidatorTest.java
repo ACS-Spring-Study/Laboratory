@@ -1,9 +1,12 @@
-import PasswordStrength.PasswordStrength;
+import PasswordStrength.PasswordStrength; //package를 통해서 strength와 validator를 가져왔음.
 import PasswordStrength.PasswordValidator;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions; // 인수 두 개가 같은지 확인하기 위한 함수? 클래스?
+import org.junit.jupiter.api.BeforeEach; // 이것은 본 테스트 이전에 수행되는 함수를 가리킨다.
+import org.junit.jupiter.api.DisplayName; // 테스트 클래스, 테스트 메서드에 이름을 지정하는 것.
+import org.junit.jupiter.api.Test; // ?
+// passwordvalidator을 적절하게 수정해서 여기서 검사하여 원하는 결과가 나올 경우
+// git에 올리면 스터디 목표 완료.
+// 태준이꺼 봐버렸기 때문에 알고리즘 푸는 느낌으로 처음부터 스스로 만들어보자. 자바 연습겸.
 
 public class PasswordValidatorTest {
   PasswordValidator pv;
