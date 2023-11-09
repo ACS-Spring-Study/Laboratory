@@ -11,7 +11,7 @@ public class ChatRoom {
     private String ownerName;
     private String channelId;
 
-    public static ChatRoom roomCreate(String ownerName) {
+    public static ChatRoom createRoom(String ownerName) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.ownerName = ownerName;
         chatRoom.channelId = UUID.randomUUID().toString();
