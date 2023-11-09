@@ -12,6 +12,4 @@ import lombok.Setter;
 public class Message {
     private String channelId;
     private String name;
-    private String message;
-    private String time;
 }
