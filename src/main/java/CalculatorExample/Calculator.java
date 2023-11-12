@@ -1,4 +1,6 @@
-public class Calculator implements Calculable{
+package CalculatorExample;
+
+public class Calculator implements Calculable {
     @Override
     public int add(int a, int b) {
         return a + b;
@@ -6,12 +8,12 @@ public class Calculator implements Calculable{
 
     @Override
     public int sub(int a, int b) {
-        return a-b;
+        return a - b;
     }
 
     @Override
     public int mul(int a, int b) {
-        return a*b;
+        return a * b;
     }
 
     @Override
