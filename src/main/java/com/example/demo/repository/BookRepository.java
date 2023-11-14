@@ -10,5 +10,4 @@ public interface BookRepository {
   List<Book> findAll();
   List<Book> findAllByContainsAuthor(String author);
   List<Book> findAllByCategory(BookCategory category);
-
 }

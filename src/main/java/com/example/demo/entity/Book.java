@@ -1,5 +1,10 @@
 package com.example.demo.entity;
 
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
 public class Book {
 
   String title;
