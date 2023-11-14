@@ -17,13 +17,13 @@ public class MemoryBookRepository implements BookRepository {
     if (memoryDB.containsKey(book.getIsbn())) {
       throw new RuntimeException("Already Book!");
     }
-
-    return memoryDB.put(book.getIsbn(), book);
+    memoryDB.put(book.getIsbn(), book);
+    return memoryDB.get(book.getIsbn());
   }
 
   @Override
   public Book findByISBN(String isbn) {
-    if (memoryDB.containsKey(isbn)) {
+    if (!memoryDB.containsKey(isbn)) {
       throw new RuntimeException("Book not found!");
     }
 
@@ -32,7 +32,13 @@ public class MemoryBookRepository implements BookRepository {
 
   @Override
   public List<Book> findAll() {
-    return (List<Book>) memoryDB.values();
+    ArrayList<Book> result = new ArrayList<>();
+
+    for(Book b : memoryDB.values()){
+      result.add(b);
+    }
+
+    return result;
   }
 
   @Override
