@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.BookCategory;
+import com.example.demo.entity.BookStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,5 +57,32 @@ public class MemoryBookRepository implements BookRepository{
     return memoryDB.values().stream()
         .filter(book -> book.getCategory().equals(category))
         .collect(Collectors.toList());
+  }
+
+
+  // 책 대여하기
+  @Override
+  public List<Book> borrowBook(String isbn){
+    List<Book> borrowBk = findByIsbn(isbn);
+    borrowBk.forEach(book -> {
+      if (book.getStatus()==BookStatus.AVAILABLE){
+        book.setStatus(BookStatus.BORROWING);
+      }
+    });
+
+    return borrowBk;
+  }
+
+  //책 반납하기
+  @Override
+  public List<Book> returnBook(String isbn){
+    List<Book> borrowBk = findByIsbn(isbn);
+    borrowBk.forEach(book -> {
+      if (book.getStatus()==BookStatus.BORROWING){
+        book.setStatus(BookStatus.AVAILABLE);
+      }
+    });
+
+    return borrowBk;
   }
 }

@@ -14,4 +14,6 @@ public interface BookRepository {
   List<Book> findByTitle(String title);
   List<Book> findByAuthor(String author);
   List<Book> findByCategory(BookCategory category);
+  List<Book> borrowBook(String isbn);
+  List<Book> returnBook(String isbn);
 }

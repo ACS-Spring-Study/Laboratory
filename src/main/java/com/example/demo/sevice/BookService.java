@@ -43,4 +43,12 @@ public class BookService {
   public List<Book> findByCategory(BookCategory category){
     return memoryBookRepository.findByCategory(category);
   }
+
+  public List<Book> borrowBook(String isbn){
+    return memoryBookRepository.borrowBook(isbn);
+  }
+
+  public List<Book> returnBook(String isbn){
+    return memoryBookRepository.returnBook(isbn);
+  }
 }
