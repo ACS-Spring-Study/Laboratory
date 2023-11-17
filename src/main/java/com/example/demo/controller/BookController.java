@@ -32,17 +32,17 @@ public class BookController {
   }
 
   @GetMapping("/book/{isbn}")
-  public Book findByIsbn(@PathVariable("isbn") String isbn) {
+    public Book findByIsbn(@PathVariable String isbn) {
     return bookService.findByIsbn(isbn);
   }
 
   @GetMapping("/book/author")
-  public List<Book> findAllContainsAuthor(@RequestParam String authorName) {
+  public List<Book> findAllContainsAuthor(@RequestParam("name") String authorName) {
     return bookService.findAllContainsAuthor(authorName);
   }
 
-  @GetMapping("/book/category")
-  public List<Book> findAllByCategory(@RequestParam String category) {
-    return bookService.findAllByCategory(BookCategory.valueOf(category));
+  @GetMapping("/books/category")
+  public List<Book> findAllByCategory(@RequestParam("name") String categoryName) {
+    return bookService.findAllByCategory(BookCategory.valueOf(categoryName));
   }
 }
