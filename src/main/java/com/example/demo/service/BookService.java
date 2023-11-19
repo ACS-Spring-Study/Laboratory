@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.dto.RegisterBookDTO;
+import com.example.demo.domain.dto.request.RegisterBookDTO;
 import com.example.demo.domain.entity.Book;
 import com.example.demo.domain.entity.BookCategory;
 import com.example.demo.domain.entity.BookStatus;
@@ -24,6 +24,8 @@ public class BookService {
                 .category(registerBookDTO.getCategory())
                 .status(BookStatus.AVAILABLE)
                 .build();
+
+
 
         return memoryBookRepository.save(newBook);
     }
