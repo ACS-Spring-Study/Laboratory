@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Book;
-import com.example.demo.entity.BookCategory;
+import com.example.demo.domain.entity.Book;
+import com.example.demo.domain.entity.BookCategory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
