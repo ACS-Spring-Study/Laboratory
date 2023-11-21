@@ -1,48 +1,211 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.dto.request.RegisterBookDTO;
+import com.example.demo.domain.dto.response.BookResponse;
+import com.example.demo.domain.dto.response.BooksResponse;
 import com.example.demo.domain.entity.Book;
 import com.example.demo.domain.entity.BookCategory;
 import com.example.demo.domain.entity.BookStatus;
 import com.example.demo.repository.BookRepository;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BookService {
     @Autowired
     BookRepository memoryBookRepository;
 
-    public Book registryBook(RegisterBookDTO registerBookDTO) {
-        Book newBook = Book.builder()
-                .title(registerBookDTO.getTitle())
-                .isbn(registerBookDTO.getIsbn())
-                .author(registerBookDTO.getAuthor())
-                .category(registerBookDTO.getCategory())
-                .status(BookStatus.AVAILABLE)
-                .build();
+    public BooksResponse registryBook(RegisterBookDTO registerBookDTO) {
+        BooksResponse response;
 
+        try {
+            Book newBook = Book
+                    .builder()
+                    .title(registerBookDTO.getTitle())
+                    .isbn(registerBookDTO.getIsbn())
+                    .author(registerBookDTO.getAuthor())
+                    .category(registerBookDTO.getCategory())
+                    .status(BookStatus.AVAILABLE)
+                    .build();
 
+            Book savedBook = memoryBookRepository.save(newBook);
+            List<BookResponse> books = new ArrayList<>();
 
-        return memoryBookRepository.save(newBook);
+            books.add(
+                    BookResponse
+                    .builder()
+                    .title(savedBook.getTitle())
+                    .isbn(savedBook.getIsbn())
+                    .author(savedBook.getAuthor())
+                    .category(savedBook.getCategory())
+                    .status(savedBook.getStatus())
+                    .build()
+            );
+
+            response = BooksResponse
+                    .builder()
+                    .message("Success")
+                    .books(books)
+                    .build();
+
+        } catch (RuntimeException e) {
+            response = BooksResponse
+                    .builder()
+                    .message(e.getMessage())
+                    .build();
+        }
+
+        return response;
     }
 
-    public Book findByIsbn(String isbn) {
-        return memoryBookRepository.findByISBN(isbn);
+    public BooksResponse findByIsbn(String isbn) {
+        BooksResponse response;
+
+        try {
+            Book findBook = memoryBookRepository.findByISBN(isbn);
+
+            List<BookResponse> books = new ArrayList<>();
+
+            books.add(
+                    BookResponse
+                            .builder()
+                            .title(findBook.getTitle())
+                            .isbn(findBook.getIsbn())
+                            .author(findBook.getAuthor())
+                            .category(findBook.getCategory())
+                            .status(findBook.getStatus())
+                            .build()
+            );
+
+            response = BooksResponse
+                    .builder()
+                    .message("Success")
+                    .books(books)
+                    .build();
+
+        } catch (RuntimeException e) {
+            response = BooksResponse
+                    .builder()
+                    .message(e.getMessage())
+                    .build();
+        }
+
+        return response;
     }
 
-    public List<Book> findAllBook() {
-        return memoryBookRepository.findAll();
+    public BooksResponse findAllBook() {
+        BooksResponse response;
+
+        try {
+            List<Book> findAllBook = memoryBookRepository.findAll();
+            List<BookResponse> books = new ArrayList<>();
+
+            for (Book findBook : findAllBook) {
+                BookResponse bookResponse = BookResponse
+                        .builder()
+                        .title(findBook.getTitle())
+                        .isbn(findBook.getIsbn())
+                        .author(findBook.getAuthor())
+                        .category(findBook.getCategory())
+                        .status(findBook.getStatus())
+                        .build();
+
+                books.add(bookResponse);
+            }
+
+            response = BooksResponse
+                    .builder()
+                    .message("Success")
+                    .books(books)
+                    .build();
+
+        } catch (RuntimeException e) {
+            response = BooksResponse
+                    .builder()
+                    .message(e.getMessage())
+                    .build();
+        }
+
+        return response;
     }
 
-    public List<Book> findAllContainsAuthor(String authorName) {
-        return memoryBookRepository.findAllByContainsAuthor(authorName);
+    public BooksResponse findAllContainsAuthor(String authorName) {
+        BooksResponse response;
+
+        try {
+            List<Book> findAllBook = memoryBookRepository.findAll();
+            List<BookResponse> books = new ArrayList<>();
+
+            for (Book findBook : findAllBook) {
+                if (findBook.getAuthor().contains(authorName)) {
+                    BookResponse bookResponse = BookResponse
+                            .builder()
+                            .title(findBook.getTitle())
+                            .isbn(findBook.getIsbn())
+                            .author(findBook.getAuthor())
+                            .category(findBook.getCategory())
+                            .status(findBook.getStatus())
+                            .build();
+
+                    books.add(bookResponse);
+                }
+            }
+
+            response = BooksResponse
+                    .builder()
+                    .message("Success")
+                    .books(books)
+                    .build();
+
+        } catch (RuntimeException e) {
+            response = BooksResponse
+                    .builder()
+                    .message(e.getMessage())
+                    .build();
+        }
+
+        return response;
     }
 
-    public List<Book> findAllByCategory(BookCategory category) {
-        return memoryBookRepository.findAllByCategory(category);
+    public BooksResponse findAllByCategory(BookCategory category) {
+        BooksResponse response;
+
+        try {
+            List<Book> findAllBook = memoryBookRepository.findAll();
+            List<BookResponse> books = new ArrayList<>();
+
+            for (Book findBook : findAllBook) {
+                if (findBook.getCategory().equals(category)) {
+                    BookResponse bookResponse = BookResponse
+                            .builder()
+                            .title(findBook.getTitle())
+                            .isbn(findBook.getIsbn())
+                            .author(findBook.getAuthor())
+                            .category(findBook.getCategory())
+                            .status(findBook.getStatus())
+                            .build();
+
+                    books.add(bookResponse);
+                }
+
+            }
+
+            response = BooksResponse
+                    .builder()
+                    .message("Success")
+                    .books(books)
+                    .build();
+
+        } catch (RuntimeException e) {
+            response = BooksResponse
+                    .builder()
+                    .message(e.getMessage())
+                    .build();
+        }
+
+        return response;
     }
 }

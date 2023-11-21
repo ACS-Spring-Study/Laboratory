@@ -2,11 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.dto.request.RegisterBookDTO;
 import com.example.demo.domain.dto.response.BaseResponse;
-import com.example.demo.domain.entity.Book;
+import com.example.demo.domain.dto.response.BookResponse;
+import com.example.demo.domain.dto.response.BooksResponse;
 import com.example.demo.domain.entity.BookCategory;
 import com.example.demo.service.BookService;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,28 +25,27 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping(value = "/book", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BaseResponse registryBook(@RequestBody RegisterBookDTO registerBookDTO) {
-
+    public BooksResponse registryBook(@RequestBody RegisterBookDTO registerBookDTO) {
       return bookService.registryBook(registerBookDTO);
     }
 
     @GetMapping("/books")
-    public BaseResponse findAll() {
+    public BooksResponse findAll() {
         return bookService.findAllBook();
     }
 
     @GetMapping("/book/{isbn}")
-    public BaseResponse findByIsbn(@PathVariable String isbn) {
+    public BooksResponse findByIsbn(@PathVariable String isbn) {
         return bookService.findByIsbn(isbn);
     }
 
     @GetMapping("/book/author")
-    public BaseResponse findAllContainsAuthor(@RequestParam("name") String authorName) {
+    public BooksResponse findAllContainsAuthor(@RequestParam("name") String authorName) {
         return bookService.findAllContainsAuthor(authorName);
     }
 
     @GetMapping("/books/category")
-    public BaseResponse findAllByCategory(@RequestParam("name") String categoryName) {
+    public BooksResponse findAllByCategory(@RequestParam("name") String categoryName) {
         return bookService.findAllByCategory(BookCategory.valueOf(categoryName));
     }
 }

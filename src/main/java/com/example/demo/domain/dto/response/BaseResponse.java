@@ -1,10 +1,11 @@
 package com.example.demo.domain.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Setter
+@SuperBuilder
 public class BaseResponse {
-    private String message;
+    String message;
 }

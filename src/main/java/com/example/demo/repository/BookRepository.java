@@ -7,6 +7,7 @@ import java.util.List;
 public interface BookRepository {
   Book save(Book book);
   Book findByISBN(String isbn);
+  boolean existsByIsbn(String isbn);
   List<Book> findAll();
   List<Book> findAllByContainsAuthor(String author);
   List<Book> findAllByCategory(BookCategory category);
