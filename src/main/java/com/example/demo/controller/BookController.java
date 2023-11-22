@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.dto.request.BorrowBookDTO;
 import com.example.demo.domain.dto.request.RegisterBookDTO;
 import com.example.demo.domain.dto.response.BaseResponse;
 import com.example.demo.domain.dto.response.BookResponse;
 import com.example.demo.domain.dto.response.BooksResponse;
+import com.example.demo.domain.dto.response.OrderResponse;
 import com.example.demo.domain.entity.BookCategory;
 import com.example.demo.service.BookService;
 
@@ -51,7 +53,7 @@ public class BookController {
     }
 
     @PatchMapping(value = "/book", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void borrowBook(){
-
+    public OrderResponse borrowBook(@RequestBody BorrowBookDTO borrowBookDTO){
+        return bookService.borrowBook(borrowBookDTO);
     }
 }
