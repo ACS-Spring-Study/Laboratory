@@ -7,5 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class BaseResponse {
-    String message;
+
+  String message;
 }

@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterBookDTO {
-    String title;
-    String isbn;
-    String author;
-    BookCategory category;
+
+  String title;
+  String isbn;
+  String author;
+  BookCategory category;
 }

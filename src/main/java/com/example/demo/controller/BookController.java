@@ -25,41 +25,46 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sj_library")
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
+  @Autowired
+  private BookService bookService;
 
-    @PostMapping(value = "/book", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BooksResponse registryBook(@RequestBody RegisterBookDTO registerBookDTO) {
-      return bookService.registryBook(registerBookDTO);
-    }
+  @PostMapping(value = "/book", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public BooksResponse registryBook(@RequestBody RegisterBookDTO registerBookDTO) {
+    return bookService.registryBook(registerBookDTO);
+  }
 
-    @GetMapping("/books")
-    public BooksResponse findAll() {
-        return bookService.findAllBook();
-    }
+  @GetMapping("/books")
+  public BooksResponse findAll() {
+    return bookService.findAllBook();
+  }
 
-    @GetMapping("/book/{isbn}")
-    public BooksResponse findByIsbn(@PathVariable String isbn) {
-        return bookService.findByIsbn(isbn);
-    }
+  @GetMapping("/book/{isbn}")
+  public BooksResponse findByIsbn(@PathVariable String isbn) {
+    return bookService.findByIsbn(isbn);
+  }
 
-    @GetMapping("/book/authorName")
-    public BooksResponse findAllContainsAuthor(@RequestParam("contains") String authorName) {
-        return bookService.findAllContainsAuthor(authorName);
-    }
+  @GetMapping("/books/title")
+  public BooksResponse findAllContainsTitle(@RequestParam("contains") String title) {
+    return bookService.findAllContainsTitle(title);
+  }
 
-    @GetMapping("/books/category")
-    public BooksResponse findAllByCategory(@RequestParam("name") String categoryName) {
-        return bookService.findAllByCategory(BookCategory.valueOf(categoryName));
-    }
+  @GetMapping("/book/authorName")
+  public BooksResponse findAllContainsAuthor(@RequestParam("contains") String authorName) {
+    return bookService.findAllContainsAuthor(authorName);
+  }
 
-    @PatchMapping(value = "/book/borrow", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public OrderResponse borrowBook(@RequestBody BorrowBookDTO borrowBookDTO){
-        return bookService.borrowBook(borrowBookDTO);
-    }
+  @GetMapping("/books/category")
+  public BooksResponse findAllByCategory(@RequestParam("name") String categoryName) {
+    return bookService.findAllByCategory(BookCategory.valueOf(categoryName));
+  }
 
-    @PatchMapping(value = "/book/return", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public OrderResponse returnBook(@RequestBody ReturnBookDTO returnBookDTO){
-        return bookService.returnBook(returnBookDTO);
-    }
+  @PatchMapping(value = "/book/borrow", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public OrderResponse borrowBook(@RequestBody BorrowBookDTO borrowBookDTO) {
+    return bookService.borrowBook(borrowBookDTO);
+  }
+
+  @PatchMapping(value = "/book/return", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public OrderResponse returnBook(@RequestBody ReturnBookDTO returnBookDTO) {
+    return bookService.returnBook(returnBookDTO);
+  }
 }

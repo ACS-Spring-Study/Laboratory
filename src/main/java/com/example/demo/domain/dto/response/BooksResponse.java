@@ -9,5 +9,6 @@ import java.util.List;
 @Getter
 @SuperBuilder
 public class BooksResponse extends BaseResponse {
-    List<BookResponse> books;
+
+  List<BookResponse> books;
 }

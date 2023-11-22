@@ -6,7 +6,8 @@ import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Getter
-public class OrderResponse extends BaseResponse{
+public class OrderResponse extends BaseResponse {
+
   String isbn;
   BookStatus status;
 }

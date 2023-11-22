@@ -9,10 +9,11 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Builder
-public class BookResponse{
-    String title;
-    String isbn;
-    String author;
-    BookCategory category;
-    BookStatus status;
+public class BookResponse {
+
+  String title;
+  String isbn;
+  String author;
+  BookCategory category;
+  BookStatus status;
 }

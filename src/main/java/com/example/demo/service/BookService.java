@@ -136,6 +136,44 @@ public class BookService {
     return response;
   }
 
+  public BooksResponse findAllContainsTitle(String title) {
+    BooksResponse response;
+
+    try {
+      List<Book> findAllBook = memoryBookRepository.findAll();
+      List<BookResponse> books = new ArrayList<>();
+
+      for (Book findBook : findAllBook) {
+        if (findBook.getTitle().contains(title)) {
+          BookResponse bookResponse = BookResponse
+              .builder()
+              .title(findBook.getTitle())
+              .isbn(findBook.getIsbn())
+              .author(findBook.getAuthor())
+              .category(findBook.getCategory())
+              .status(findBook.getStatus())
+              .build();
+
+          books.add(bookResponse);
+        }
+      }
+
+      response = BooksResponse
+          .builder()
+          .message("Success")
+          .books(books)
+          .build();
+
+    } catch (RuntimeException e) {
+      response = BooksResponse
+          .builder()
+          .message(e.getMessage())
+          .build();
+    }
+
+    return response;
+  }
+
   public BooksResponse findAllContainsAuthor(String authorName) {
     BooksResponse response;
 
