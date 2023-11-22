@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.dto.request.BorrowBookDTO;
 import com.example.demo.domain.dto.request.RegisterBookDTO;
+import com.example.demo.domain.dto.request.ReturnBookDTO;
 import com.example.demo.domain.dto.response.BaseResponse;
 import com.example.demo.domain.dto.response.BookResponse;
 import com.example.demo.domain.dto.response.BooksResponse;
@@ -52,8 +53,13 @@ public class BookController {
         return bookService.findAllByCategory(BookCategory.valueOf(categoryName));
     }
 
-    @PatchMapping(value = "/book", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/book/borrow", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public OrderResponse borrowBook(@RequestBody BorrowBookDTO borrowBookDTO){
         return bookService.borrowBook(borrowBookDTO);
+    }
+
+    @PatchMapping(value = "/book/return", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public OrderResponse returnBook(@RequestBody ReturnBookDTO returnBookDTO){
+        return bookService.returnBook(returnBookDTO);
     }
 }

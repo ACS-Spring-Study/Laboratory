@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.domain.dto.request.BorrowBookDTO;
 import com.example.demo.domain.dto.request.RegisterBookDTO;
+import com.example.demo.domain.dto.request.ReturnBookDTO;
 import com.example.demo.domain.dto.response.BookResponse;
 import com.example.demo.domain.dto.response.BooksResponse;
 import com.example.demo.domain.dto.response.OrderResponse;
@@ -228,9 +229,37 @@ public class BookService {
             .status(book.getStatus())
             .build();
       } else {
-        throw new RuntimeException("Book is not available");
+        throw new RuntimeException("Book is not available!");
       }
 
+    } catch (RuntimeException e) {
+      response = OrderResponse
+          .builder()
+          .message(e.getMessage())
+          .build();
+    }
+
+    return response;
+  }
+
+  public OrderResponse returnBook(ReturnBookDTO returnBookDTO) {
+    OrderResponse response;
+
+    try {
+      Book book = memoryBookRepository.findByISBN(returnBookDTO.getIsbn());
+
+      if (book.getStatus() == BookStatus.AVAILABLE) {
+        throw new RuntimeException("Book is available!");
+      } else {
+        book.setStatus(BookStatus.AVAILABLE);
+
+        response = OrderResponse
+            .builder()
+            .message("Return book")
+            .isbn(book.getIsbn())
+            .status(book.getStatus())
+            .build();
+      }
     } catch (RuntimeException e) {
       response = OrderResponse
           .builder()
