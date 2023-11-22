@@ -10,6 +10,7 @@ import com.example.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,13 +40,18 @@ public class BookController {
         return bookService.findByIsbn(isbn);
     }
 
-    @GetMapping("/book/author")
-    public BooksResponse findAllContainsAuthor(@RequestParam("name") String authorName) {
+    @GetMapping("/book/authorName")
+    public BooksResponse findAllContainsAuthor(@RequestParam("contains") String authorName) {
         return bookService.findAllContainsAuthor(authorName);
     }
 
     @GetMapping("/books/category")
     public BooksResponse findAllByCategory(@RequestParam("name") String categoryName) {
         return bookService.findAllByCategory(BookCategory.valueOf(categoryName));
+    }
+
+    @PatchMapping(value = "/book", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void borrowBook(){
+
     }
 }
