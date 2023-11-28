@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@ResponseBody
 @RequestMapping("/jp_library")
 public class BookController {
 
@@ -36,26 +35,26 @@ public class BookController {
   }
 
   //책의 ISBN으로 도서한권을 조회하기
-  @GetMapping("book/{isbn}")
+  @GetMapping("book/isbn/{isbn}")
   public List<Book> findByIsbn(@PathVariable String isbn){
     return bookService.findByIsbn(isbn);
   }
 
   //책을 도서명으로 조회하기
-  @GetMapping("book/title")
-  public List<Book> findByTitle(@RequestBody Book book){
-    return bookService.findByTitle(book.getTitle());
+  @GetMapping("book/title/{title}")
+  public List<Book> findByTitle(@PathVariable String title){
+    return bookService.findByTitle(title);
   }
 
   //책을 저자명으로 조회하기
-  @GetMapping("book/author")
-  public List<Book> findByAuthor(@RequestBody Book book){
-    return bookService.findByAuthor(book.getAuthor());
+  @GetMapping("book/author/{author}")
+  public List<Book> findByAuthor(@PathVariable String author){
+    return bookService.findByAuthor(author);
   }
   //책을 분류별로 조회하기
-  @GetMapping("book/category")
-  public List<Book> findByCategory(@RequestBody Book book){
-    return bookService.findByCategory(book.getCategory());
+  @GetMapping("book/category/{category}")
+  public List<Book> findByCategory(@PathVariable BookCategory category){
+    return bookService.findByCategory(category);
   }
 
   //책을 한권 대여하기
