@@ -13,7 +13,7 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     //도서관에 책을 등록하기
     @PostMapping("/book")
