@@ -11,6 +11,7 @@ import com.example.demo.domain.entity.BookCategory;
 import com.example.demo.domain.entity.BookStatus;
 import com.example.demo.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ import java.util.List;
 public class BookService {
 
   @Autowired
-  BookRepository memoryBookRepository;
+  @Qualifier("StatementBookRepository")
+  BookRepository bookRepository;
 
   public BooksResponse registryBook(RegisterBookDTO registerBookDTO) {
     BooksResponse response;
@@ -35,7 +37,7 @@ public class BookService {
           .status(BookStatus.AVAILABLE)
           .build();
 
-      Book savedBook = memoryBookRepository.save(newBook);
+      Book savedBook = bookRepository.save(newBook);
       List<BookResponse> books = new ArrayList<>();
 
       books.add(
@@ -69,7 +71,7 @@ public class BookService {
     BooksResponse response;
 
     try {
-      Book findBook = memoryBookRepository.findByISBN(isbn);
+      Book findBook = bookRepository.findByISBN(isbn);
 
       List<BookResponse> books = new ArrayList<>();
 
@@ -104,7 +106,7 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = memoryBookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findAll();
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
@@ -140,7 +142,7 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = memoryBookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findAll();
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
@@ -178,7 +180,7 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = memoryBookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findAll();
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
@@ -216,7 +218,7 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = memoryBookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findAll();
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
@@ -255,7 +257,7 @@ public class BookService {
     OrderResponse response;
 
     try {
-      Book book = memoryBookRepository.findByISBN(borrowBookDTO.getIsbn());
+      Book book = bookRepository.findByISBN(borrowBookDTO.getIsbn());
 
       if (book.getStatus() == BookStatus.AVAILABLE) {
         book.setStatus(BookStatus.BORROWING);
@@ -284,7 +286,7 @@ public class BookService {
     OrderResponse response;
 
     try {
-      Book book = memoryBookRepository.findByISBN(returnBookDTO.getIsbn());
+      Book book = bookRepository.findByISBN(returnBookDTO.getIsbn());
 
       if (book.getStatus() == BookStatus.AVAILABLE) {
         throw new RuntimeException("Book is available!");
