@@ -20,8 +20,8 @@ import java.util.List;
 @Service
 public class BookService {
 
+  @Qualifier("jdbcBookRepository")
   @Autowired
-  @Qualifier("JdbcBookRepository")
   BookRepository bookRepository;
 
   public BooksResponse registryBook(RegisterBookDTO registerBookDTO) {

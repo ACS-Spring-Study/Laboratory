@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Qualifier("JdbcBookRepository")
 public class JdbcBookRepository implements BookRepository {
   private static final String DATABASE_URL = System.getenv("DATABASE_URL");
   private static Connection connection;
