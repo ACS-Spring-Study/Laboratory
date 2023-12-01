@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Qualifier("MemoryBookRepository")
 public class MemoryBookRepository implements BookRepository {
 
   private static HashMap<String, Book> memoryDB = new HashMap<>();

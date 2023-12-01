@@ -21,7 +21,7 @@ import java.util.List;
 public class BookService {
 
   @Autowired
-  @Qualifier("StatementBookRepository")
+  @Qualifier("JdbcBookRepository")
   BookRepository bookRepository;
 
   public BooksResponse registryBook(RegisterBookDTO registerBookDTO) {
