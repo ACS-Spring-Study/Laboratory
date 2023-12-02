@@ -28,7 +28,22 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public Book save(Book book) {
-    return null;
+    try (Connection connection = DriverManager.getConnection(DATABASE_URL)) {
+      String query = "INSERT INTO book (title, isbn, author, book_category, book_status) VALUES (?, ?, ?, ?, ?)";
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+      preparedStatement.setString(1, book.getTitle());
+      preparedStatement.setString(2, book.getIsbn());
+      preparedStatement.setString(3, book.getAuthor());
+      preparedStatement.setString(4, book.getCategory().toString());
+      preparedStatement.setString(5, book.getStatus().toString());
+
+      preparedStatement.executeUpdate();
+
+      System.out.println("등록 성공 !!!");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return book;
   }
 
   @Override
