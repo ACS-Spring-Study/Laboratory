@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.BookDTO;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.BookCategory;
 import com.example.demo.service.BookService;
@@ -17,8 +18,9 @@ public class BookController {
 
     //도서관에 책을 등록하기
     @PostMapping("/book")
-    public Book save(@RequestBody Book book){
-        return bookService.save(book);
+    public Book save(@RequestBody BookDTO dto){
+        Book saved = bookService.save(dto);
+        return saved;
     }
 
     //도서관이 보유한 전체 도서를 조회하기
@@ -34,24 +36,25 @@ public class BookController {
     }
 
     //책을 도서명으로 조회하기
-    @GetMapping("/book/title")
-    public List<Book> findTitle(@RequestBody Book book){
-        return bookService.searchTitle(book.getTitle());
+    @GetMapping("/book/title/{title}")
+    public Book findTitle(@PathVariable String title){
+        return bookService.findByTitle(title);
     }
 //    책을 저자명으로 조회하기
-    @GetMapping("/book/author")
-    public List<Book> findAuthor(@RequestBody Book book){
-        return bookService.searchAuthor(book.getAuthor());
+    @GetMapping("/book/author/{author}")
+    public Book findAuthor(@PathVariable String author){
+        return bookService.searchAuthor(author);
     }
 
     //책을 분류(Category)별로 조회하기
-    @GetMapping("/book/category")
-    public List<Book> findCategory(@RequestBody Book book){
-        return bookService.searchCategory(book.getCategory());
+    @GetMapping("/book/category/{category}")
+    public Book findCategory(@PathVariable BookCategory category){
+        return bookService.searchCategory(category);
     }
     //책을 한 권 대여하기
     @PatchMapping("/book/borrow/{isbn}")
     public Book borrow(@PathVariable String isbn){
+
         return bookService.borrow(isbn);
     }
 
