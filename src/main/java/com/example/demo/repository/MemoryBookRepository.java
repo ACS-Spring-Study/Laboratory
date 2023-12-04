@@ -15,7 +15,7 @@ public class MemoryBookRepository implements BookRepository{
 
   //도서관에 책을 등록하기
   @Override
-  public Book saveBook(Book book){
+  public Book save(Book book){
     memoryDB.put(book.getIsbn(), book);
     return book;
   }
@@ -28,7 +28,7 @@ public class MemoryBookRepository implements BookRepository{
 
   //책의 ISBN으로 도서한권을 조회하기
   @Override
-  public Book findByIsbn(String isbn){
+  public Book findByISBN(String isbn){
     System.out.println(memoryDB.get(isbn));
     return memoryDB.get(isbn);
   }
@@ -61,7 +61,7 @@ public class MemoryBookRepository implements BookRepository{
   // 책 대여하기
   @Override
   public Book borrowBook(String isbn){
-    Book borrowBk = findByIsbn(isbn);
+    Book borrowBk = findByISBN(isbn);
     if (borrowBk.getStatus()==BookStatus.AVAILABLE){
       borrowBk.setStatus(BookStatus.BORROWING);
     }
@@ -71,10 +71,15 @@ public class MemoryBookRepository implements BookRepository{
   //책 반납하기
   @Override
   public Book returnBook(String isbn){
-    Book borrowBk = findByIsbn(isbn);
+    Book borrowBk = findByISBN(isbn);
     if (borrowBk.getStatus()==BookStatus.BORROWING){
       borrowBk.setStatus(BookStatus.AVAILABLE);
     }
     return borrowBk;
+  }
+
+  @Override
+  public boolean existsByIsbn(String isbn) {
+    return false;
   }
 }
