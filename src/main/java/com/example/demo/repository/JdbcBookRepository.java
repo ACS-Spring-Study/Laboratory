@@ -1,11 +1,15 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.entity.Book;
+import com.example.demo.domain.entity.BookCategory;
+import com.example.demo.domain.entity.BookStatus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -44,6 +48,29 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public List<Book> findAll() {
-    return null;
+    List<Book> books = new ArrayList<>();
+
+    try {
+      String sql = "Select * from Book";
+      ResultSet resultset = statement.executeQuery(sql);
+
+      while (resultset.next()) {
+        Book book = new Book();
+        book.setTitle(resultset.getString("title"));
+        book.setIsbn(resultset.getString("isbn"));
+        book.setAuthor(resultset.getString("author"));
+        book.setCategory(BookCategory.valueOf(resultset.getString("book_category")));
+        book.setStatus(BookStatus.valueOf(resultset.getString("book_status")));
+
+        books.add(book);
+      }
+
+      resultset.close();
+      statement.close();
+      connection.close();
+    } catch (SQLException e){
+      System.out.println(e.getMessage());
+    }
+    return books;
   }
 }
