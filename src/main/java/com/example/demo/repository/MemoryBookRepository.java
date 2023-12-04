@@ -11,13 +11,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class MemoryBookRepository implements BookRepository{
-  HashMap<Integer, Book> memoryDB = new HashMap<>();
-  public static int sequence = 0;
+  HashMap<String, Book> memoryDB = new HashMap<>();
 
   //도서관에 책을 등록하기
   @Override
   public Book saveBook(Book book){
-    memoryDB.put(++sequence, book);
+    memoryDB.put(book.getIsbn(), book);
     return book;
   }
 
@@ -27,11 +26,11 @@ public class MemoryBookRepository implements BookRepository{
     return new ArrayList<>(memoryDB.values());
   }
 
-  //책의 ISBN으로 도서한권을 조회하기@Override
-  public List<Book> findByIsbn(String isbn){
-    return memoryDB.values().stream()
-        .filter(book -> book.getIsbn().equals(isbn))
-        .collect(Collectors.toList());
+  //책의 ISBN으로 도서한권을 조회하기
+  @Override
+  public Book findByIsbn(String isbn){
+    System.out.println(memoryDB.get(isbn));
+    return memoryDB.get(isbn);
   }
 
   //책을 도서명으로 조회하기
@@ -61,27 +60,21 @@ public class MemoryBookRepository implements BookRepository{
 
   // 책 대여하기
   @Override
-  public List<Book> borrowBook(String isbn){
-    List<Book> borrowBk = findByIsbn(isbn);
-    borrowBk.forEach(book -> {
-      if (book.getStatus()==BookStatus.AVAILABLE){
-        book.setStatus(BookStatus.BORROWING);
-      }
-    });
-
-    return borrowBk;
+  public Book borrowBook(String isbn){
+    Book borrowBk = findByIsbn(isbn);
+    if (borrowBk.getStatus()==BookStatus.AVAILABLE){
+      borrowBk.setStatus(BookStatus.BORROWING);
+    }
+  return borrowBk;
   }
 
   //책 반납하기
   @Override
-  public List<Book> returnBook(String isbn){
-    List<Book> borrowBk = findByIsbn(isbn);
-    borrowBk.forEach(book -> {
-      if (book.getStatus()==BookStatus.BORROWING){
-        book.setStatus(BookStatus.AVAILABLE);
-      }
-    });
-
+  public Book returnBook(String isbn){
+    Book borrowBk = findByIsbn(isbn);
+    if (borrowBk.getStatus()==BookStatus.BORROWING){
+      borrowBk.setStatus(BookStatus.AVAILABLE);
+    }
     return borrowBk;
   }
 }

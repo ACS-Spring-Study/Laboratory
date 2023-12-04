@@ -36,7 +36,7 @@ public class BookController {
 
   //책의 ISBN으로 도서한권을 조회하기
   @GetMapping("book/isbn/{isbn}")
-  public List<Book> findByIsbn(@PathVariable String isbn){
+  public Book findByIsbn(@PathVariable String isbn){
     return bookService.findByIsbn(isbn);
   }
 
@@ -59,13 +59,13 @@ public class BookController {
 
   //책을 한권 대여하기
   @PatchMapping("book/borrow/{isbn}")
-  public List<Book> borrowBook(@PathVariable String isbn){
+  public Book borrowBook(@PathVariable String isbn){
     return bookService.borrowBook(isbn);
   }
 
   //대여한 책을 반납하기
   @PatchMapping("book/return/{isbn}")
-  public List<Book> returnBook(@PathVariable String isbn){
+  public Book returnBook(@PathVariable String isbn){
     return bookService.returnBook(isbn);
   }
 }

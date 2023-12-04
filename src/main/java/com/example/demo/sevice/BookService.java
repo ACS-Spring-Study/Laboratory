@@ -25,7 +25,7 @@ public class BookService {
   }
 
   //책의 ISBN으로 도서한권을 조회하기
-  public List<Book> findByIsbn(String isbn){
+  public Book findByIsbn(String isbn){
     return memoryBookRepository.findByIsbn(isbn);
   }
 
@@ -44,11 +44,11 @@ public class BookService {
     return memoryBookRepository.findByCategory(category);
   }
 
-  public List<Book> borrowBook(String isbn){
+  public Book borrowBook(String isbn){
     return memoryBookRepository.borrowBook(isbn);
   }
 
-  public List<Book> returnBook(String isbn){
+  public Book returnBook(String isbn){
     return memoryBookRepository.returnBook(isbn);
   }
 }

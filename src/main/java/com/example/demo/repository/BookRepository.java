@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository {
   Book saveBook(Book book);
   List<Book> findAll();
-  List<Book> findByIsbn(String isbn);
+  Book findByIsbn(String isbn);
   List<Book> findByTitle(String title);
   List<Book> findByAuthor(String author);
   List<Book> findByCategory(BookCategory category);
-  List<Book> borrowBook(String isbn);
-  List<Book> returnBook(String isbn);
+  Book borrowBook(String isbn);
+  Book returnBook(String isbn);
 }
