@@ -21,6 +21,7 @@ public class JdbcBookRepository implements BookRepository {
     try {
       connection = DriverManager.getConnection(DATABASE_URL);
       statement = connection.createStatement();
+      System.out.println("DB Connection Succeed");
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
