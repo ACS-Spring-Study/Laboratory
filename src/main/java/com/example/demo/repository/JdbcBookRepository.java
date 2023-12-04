@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -76,6 +77,23 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public List<Book> findAll() {
-    return null;
+    List<Book> books = new ArrayList<>();
+    try {
+      String query = "SELECT * FROM book";
+      resultSet = statement.executeQuery(query);
+
+      while (resultSet.next()) {
+        String title = resultSet.getString("title");
+        String isbn = resultSet.getString("isbn");
+        String author = resultSet.getString("author");
+        BookCategory category = BookCategory.valueOf(resultSet.getString("book_category"));
+        BookStatus status = BookStatus.valueOf(resultSet.getString("book_status"));
+        Book book = new Book(title, isbn, author, category, status);
+        books.add(book);
+      }
+    } catch (SQLException e) {
+      e.getStackTrace();
+    }
+    return books;
   }
 }
