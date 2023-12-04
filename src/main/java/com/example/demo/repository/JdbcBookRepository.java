@@ -1,9 +1,12 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.entity.Book;
+import com.example.demo.domain.entity.BookCategory;
+import com.example.demo.domain.entity.BookStatus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -16,7 +19,7 @@ public class JdbcBookRepository implements BookRepository {
   private static Connection connection;
   private static Statement statement;
   private static PreparedStatement preparedStatement;
-
+  ResultSet resultSet;
   public JdbcBookRepository(){
     try {
       connection = DriverManager.getConnection(DATABASE_URL);
@@ -28,32 +31,47 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public Book save(Book book) {
-    try (Connection connection = DriverManager.getConnection(DATABASE_URL)) {
+    try {
       String query = "INSERT INTO book (title, isbn, author, book_category, book_status) VALUES (?, ?, ?, ?, ?)";
-      PreparedStatement preparedStatement = connection.prepareStatement(query);
+      preparedStatement = connection.prepareStatement(query);
       preparedStatement.setString(1, book.getTitle());
       preparedStatement.setString(2, book.getIsbn());
       preparedStatement.setString(3, book.getAuthor());
       preparedStatement.setString(4, book.getCategory().toString());
-      preparedStatement.setString(5, book.getStatus().toString());
 
       preparedStatement.executeUpdate();
 
       System.out.println("등록 성공 !!!");
     } catch (SQLException e) {
-      e.printStackTrace();
+      e.getStackTrace();
     }
     return book;
   }
 
   @Override
   public Book findByISBN(String isbn) {
+    try{
+      preparedStatement = connection.prepareStatement("SELECT * FROM book WHERE isbn = ?");
+      preparedStatement.setString(1, isbn);
+      resultSet = preparedStatement.executeQuery();
+      if(resultSet.next()){
+        return Book.builder()
+            .title(resultSet.getString("title"))
+            .isbn(resultSet.getString("isbn"))
+            .author(resultSet.getString("author"))
+            .category(BookCategory.valueOf(resultSet.getString("book_category")))
+            .status(BookStatus.valueOf(resultSet.getString("book_status")))
+            .build();
+      }
+    } catch (SQLException e) {
+      e.getStackTrace();
+    }
     return null;
   }
 
   @Override
   public boolean existsByIsbn(String isbn) {
-    return false;
+	  return false;
   }
 
   @Override
