@@ -1,7 +1,8 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Book;
-import com.example.demo.entity.BookCategory;
+import com.example.demo.domain.entity.Book;
+import com.example.demo.domain.entity.BookCategory;
+import java.sql.SQLException;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 
