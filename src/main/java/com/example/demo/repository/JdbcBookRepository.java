@@ -33,7 +33,30 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public Book save(Book book) {
-    return null;
+    String sql = "Insert into Book values(NULL, ?, ?, ?, ?, ?)";
+
+    try {
+      preparedStatement = connection.prepareStatement(sql);
+
+      preparedStatement.setString(1, book.getTitle());
+      preparedStatement.setString(2, book.getIsbn());
+      preparedStatement.setString(3, book.getAuthor());
+      preparedStatement.setString(4, String.valueOf(book.getCategory()));
+      preparedStatement.setString(5, String.valueOf(book.getStatus()));
+
+      preparedStatement.executeUpdate();
+
+      System.out.println(book.getTitle() +" 책 등록 성공");
+
+      preparedStatement.close();
+//      connection.close();
+
+      return book;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
   }
 
   @Override
@@ -62,12 +85,14 @@ public class JdbcBookRepository implements BookRepository {
         book.setCategory(BookCategory.valueOf(resultset.getString("book_category")));
         book.setStatus(BookStatus.valueOf(resultset.getString("book_status")));
 
+        System.out.println("모든 책 조회 성공");
+
         books.add(book);
       }
 
       resultset.close();
       statement.close();
-      connection.close();
+//      connection.close();
     } catch (SQLException e){
       System.out.println(e.getMessage());
     }
