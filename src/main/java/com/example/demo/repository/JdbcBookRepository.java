@@ -20,7 +20,7 @@ public class JdbcBookRepository implements BookRepository {
   private static Connection connection;
   private static Statement statement;
   private static PreparedStatement preparedStatement;
-  ResultSet resultSet;
+  private static ResultSet resultSet;
   public JdbcBookRepository(){
     try {
       connection = DriverManager.getConnection(DATABASE_URL);
@@ -43,6 +43,9 @@ public class JdbcBookRepository implements BookRepository {
       preparedStatement.executeUpdate();
 
       System.out.println("등록 성공 !!!");
+      preparedStatement.close();
+      statement.close();
+      connection.close();
     } catch (SQLException e) {
       e.getStackTrace();
     }
@@ -52,7 +55,8 @@ public class JdbcBookRepository implements BookRepository {
   @Override
   public Book findByISBN(String isbn) {
     try{
-      preparedStatement = connection.prepareStatement("SELECT * FROM book WHERE isbn = ?");
+      String query = "SELECT * FROM book WHERE isbn = ?";
+      preparedStatement = connection.prepareStatement(query);
       preparedStatement.setString(1, isbn);
       resultSet = preparedStatement.executeQuery();
       if(resultSet.next()){
@@ -64,6 +68,9 @@ public class JdbcBookRepository implements BookRepository {
             .status(BookStatus.valueOf(resultSet.getString("book_status")))
             .build();
       }
+      resultSet.close();
+      statement.close();
+      connection.close();
     } catch (SQLException e) {
       e.getStackTrace();
     }
@@ -72,6 +79,7 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public boolean existsByIsbn(String isbn) {
+
 	  return false;
   }
 
@@ -91,6 +99,9 @@ public class JdbcBookRepository implements BookRepository {
         Book book = new Book(title, isbn, author, category, status);
         books.add(book);
       }
+      resultSet.close();
+      statement.close();
+      connection.close();
     } catch (SQLException e) {
       e.getStackTrace();
     }
