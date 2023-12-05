@@ -49,7 +49,6 @@ public class JdbcBookRepository implements BookRepository {
       System.out.println(book.getTitle() +" 책 등록 성공");
 
       preparedStatement.close();
-//      connection.close();
 
       return book;
 
@@ -61,7 +60,35 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public Book findByISBN(String isbn) {
-    return null;
+    Book book = new Book();
+
+    String sql = "SELECT * from Book where isbn = ?";
+
+    try {
+      preparedStatement = connection.prepareStatement(sql);
+
+      preparedStatement.setString(1, isbn);
+
+      ResultSet resultSet = preparedStatement.executeQuery();
+
+      if (resultSet.next()) {
+        book.setTitle(resultSet.getString("title"));
+        book.setIsbn(resultSet.getString("isbn"));
+        book.setAuthor(resultSet.getString("author"));
+        book.setCategory(BookCategory.valueOf(resultSet.getString("book_category")));
+        book.setStatus(BookStatus.valueOf(resultSet.getString("book_status")));
+
+        System.out.println(book.getTitle() + " 책 조회 성공");
+      } else {
+        System.out.println("책을 찾을 수 없습니다.");
+      }
+
+      return book;
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
   }
 
   @Override
@@ -92,7 +119,6 @@ public class JdbcBookRepository implements BookRepository {
 
       resultset.close();
       statement.close();
-//      connection.close();
     } catch (SQLException e){
       System.out.println(e.getMessage());
     }
