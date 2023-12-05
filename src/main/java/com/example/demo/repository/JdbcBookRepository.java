@@ -93,7 +93,27 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public boolean existsByIsbn(String isbn) {
-    return false;
+    String sql = "SELECT * from Book where isbn = ?";
+
+    try {
+      preparedStatement = connection.prepareStatement(sql);
+
+      preparedStatement.setString(1, isbn);
+
+      ResultSet resultSet = preparedStatement.executeQuery();
+
+      if (resultSet.next()) {
+        System.out.println(isbn + " 은 이미 있는 책입니다.");
+        return true;
+      } else {
+        System.out.println(isbn + "에 해당하는 책을 찾을 수 없습니다.");
+        return false;
+      }
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
   }
 
   @Override
