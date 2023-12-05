@@ -11,17 +11,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class JdbcBookRepository implements BookRepository {
+
   private static final String DATABASE_URL = System.getenv("DATABASE_URL");
   private static Connection connection;
   private static Statement statement;
   private static PreparedStatement preparedStatement;
   private static ResultSet resultSet;
-  public JdbcBookRepository(){
+
+  public JdbcBookRepository() {
     try {
       connection = DriverManager.getConnection(DATABASE_URL);
       statement = connection.createStatement();
@@ -44,8 +45,6 @@ public class JdbcBookRepository implements BookRepository {
 
       System.out.println("등록 성공 !!!");
       preparedStatement.close();
-      statement.close();
-      connection.close();
     } catch (SQLException e) {
       e.getStackTrace();
     }
@@ -54,12 +53,12 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public Book findByISBN(String isbn) {
-    try{
+    try {
       String query = "SELECT * FROM book WHERE isbn = ?";
       preparedStatement = connection.prepareStatement(query);
       preparedStatement.setString(1, isbn);
       resultSet = preparedStatement.executeQuery();
-      if(resultSet.next()){
+      if (resultSet.next()) {
         return Book.builder()
             .title(resultSet.getString("title"))
             .isbn(resultSet.getString("isbn"))
@@ -68,9 +67,6 @@ public class JdbcBookRepository implements BookRepository {
             .status(BookStatus.valueOf(resultSet.getString("book_status")))
             .build();
       }
-      resultSet.close();
-      statement.close();
-      connection.close();
     } catch (SQLException e) {
       e.getStackTrace();
     }
@@ -79,8 +75,20 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public boolean existsByIsbn(String isbn) {
+    boolean flag = false;
+    try {
+      String query = "SELECT EXISTS(SELECT 1 FROM your_books_table WHERE isbn = ?) AS bookExists";
+      preparedStatement = connection.prepareStatement(query);
+      preparedStatement.setString(1, isbn);
+      resultSet = preparedStatement.executeQuery();
 
-	  return false;
+      if (resultSet.next()) {
+        flag = resultSet.getBoolean("bookExists");
+      }
+    } catch (SQLException e) {
+      e.getStackTrace();
+    }
+    return flag;
   }
 
   @Override
@@ -99,12 +107,10 @@ public class JdbcBookRepository implements BookRepository {
         Book book = new Book(title, isbn, author, category, status);
         books.add(book);
       }
-      resultSet.close();
-      statement.close();
-      connection.close();
     } catch (SQLException e) {
       e.getStackTrace();
     }
     return books;
   }
+
 }
