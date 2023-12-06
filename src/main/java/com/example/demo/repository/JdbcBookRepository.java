@@ -33,19 +33,17 @@ public class JdbcBookRepository implements BookRepository {
   @Override
   public Book save(Book book) {
     try {
-      String sql = "insert into book (title, isbn, author, book_category, book_status) VALUES (?, ?, ?, ?, ?)";
+      String sql = "insert into book (title, isbn, author, book_category) VALUES (?, ?, ?, ?)";
       preparedStatement = connection.prepareStatement(sql);
 
       preparedStatement.setNString(1, book.getTitle());
       preparedStatement.setNString(2, book.getIsbn());
       preparedStatement.setNString(3, book.getAuthor());
       preparedStatement.setNString(4, book.getCategory().name());
-      preparedStatement.setNString(5, book.getStatus().name());
 
       preparedStatement.executeUpdate();
-      System.out.println("책 등록");
     } catch (SQLException e) {
-      System.out.println("등록 실패");
+      e.printStackTrace();
     }
     return book;
   }
@@ -75,6 +73,20 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public boolean existsByIsbn(String isbn) {
+
+    try {
+      String sql = "select * from book where isbn=?";
+
+      preparedStatement = connection.prepareStatement(sql);
+      preparedStatement.setString(1, isbn);
+      int count = preparedStatement.executeUpdate();
+
+      if (count == 1){
+        return true;
+      }
+    }catch (SQLException e){
+      e.printStackTrace();
+    }
     return false;
   }
 
@@ -181,10 +193,47 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public Book borrowBook(String isbn){
+    try {
+      String sql = "update book set book_status = 'BORROWING' where isbn=? ";
+      preparedStatement = connection.prepareStatement(sql);
+
+      preparedStatement.setString(1, isbn);
+      rs = preparedStatement.executeQuery();
+      if(rs.next()){
+        Book book = new Book();
+        book.setTitle(rs.getString("title"));
+        book.setIsbn(rs.getString("isbn"));
+        book.setAuthor(rs.getString("author"));
+        book.setCategory(BookCategory.valueOf(rs.getString("book_category")));
+        book.setStatus(BookStatus.valueOf(rs.getString("book_status")));
+        return book;
+      }
+    }catch(SQLException e){
+      e.printStackTrace();
+    }
     return null;
   }
+
   @Override
   public Book returnBook(String isbn){
+    try {
+      String sql = "update book set book_status = 'AVAILABLE' where isbn=? ";
+      preparedStatement = connection.prepareStatement(sql);
+
+      preparedStatement.setString(1, isbn);
+      rs = preparedStatement.executeQuery();
+      if(rs.next()){
+        Book book = new Book();
+        book.setTitle(rs.getString("title"));
+        book.setIsbn(rs.getString("isbn"));
+        book.setAuthor(rs.getString("author"));
+        book.setCategory(BookCategory.valueOf(rs.getString("book_category")));
+        book.setStatus(BookStatus.valueOf(rs.getString("book_status")));
+        return book;
+      }
+    }catch(SQLException e){
+      e.printStackTrace();
+    }
     return null;
   }
 }
