@@ -21,6 +21,18 @@ public class JdbcBookRepository implements BookRepository {
   private static Statement statement;
   private static PreparedStatement preparedStatement;
 
+  private Book setBook(ResultSet resultSet) throws SQLException {
+    Book book = new Book();
+
+    book.setTitle(resultSet.getString("title"));
+    book.setIsbn(resultSet.getString("isbn"));
+    book.setAuthor(resultSet.getString("author"));
+    book.setCategory(BookCategory.valueOf(resultSet.getString("book_category")));
+    book.setStatus(BookStatus.valueOf(resultSet.getString("book_status")));
+
+    return book;
+  }
+
   public JdbcBookRepository(){
     try {
       connection = DriverManager.getConnection(DATABASE_URL);
@@ -54,13 +66,13 @@ public class JdbcBookRepository implements BookRepository {
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
-      return null;
     }
+    return null;
+
   }
 
   @Override
   public Book findByISBN(String isbn) {
-    Book book = new Book();
 
     String sql = "SELECT * from Book where isbn = ?";
 
@@ -72,23 +84,23 @@ public class JdbcBookRepository implements BookRepository {
       ResultSet resultSet = preparedStatement.executeQuery();
 
       if (resultSet.next()) {
-        book.setTitle(resultSet.getString("title"));
-        book.setIsbn(resultSet.getString("isbn"));
-        book.setAuthor(resultSet.getString("author"));
-        book.setCategory(BookCategory.valueOf(resultSet.getString("book_category")));
-        book.setStatus(BookStatus.valueOf(resultSet.getString("book_status")));
+
+        Book book = setBook(resultSet);
 
         System.out.println(book.getTitle() + " 책 조회 성공");
+
+        return book;
+
       } else {
         System.out.println("책을 찾을 수 없습니다.");
       }
 
-      return book;
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
-      return null;
     }
+    return null;
+
   }
 
   @Override
@@ -125,12 +137,7 @@ public class JdbcBookRepository implements BookRepository {
       ResultSet resultset = statement.executeQuery(sql);
 
       while (resultset.next()) {
-        Book book = new Book();
-        book.setTitle(resultset.getString("title"));
-        book.setIsbn(resultset.getString("isbn"));
-        book.setAuthor(resultset.getString("author"));
-        book.setCategory(BookCategory.valueOf(resultset.getString("book_category")));
-        book.setStatus(BookStatus.valueOf(resultset.getString("book_status")));
+        Book book = setBook(resultset);
 
         System.out.println("모든 책 조회 성공");
 
@@ -139,9 +146,12 @@ public class JdbcBookRepository implements BookRepository {
 
       resultset.close();
       statement.close();
-    } catch (SQLException e){
+
+      return books;
+
+    } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
-    return books;
+    return null;
   }
 }
