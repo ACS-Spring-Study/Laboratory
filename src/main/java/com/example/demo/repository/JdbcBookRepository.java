@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +22,8 @@ public class JdbcBookRepository implements BookRepository {
   private static Connection connection;
   private static Statement statement;
   private static PreparedStatement preparedStatement;
+
+  private final Logger log = LoggerFactory.getLogger(getClass());
 
   private Book setBook(ResultSet resultSet) throws SQLException {
     Book book = new Book();
@@ -37,7 +41,7 @@ public class JdbcBookRepository implements BookRepository {
     try {
       connection = DriverManager.getConnection(DATABASE_URL);
       statement = connection.createStatement();
-      System.out.println("DB Connection Succeed");
+      log.info("DB Connection Succeed");
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
@@ -58,14 +62,14 @@ public class JdbcBookRepository implements BookRepository {
 
       preparedStatement.executeUpdate();
 
-      System.out.println(book.getTitle() +" 책 등록 성공");
+      log.info(book.getTitle() +" 책 등록 성공");
 
       preparedStatement.close();
 
       return book;
 
     } catch (SQLException e) {
-      System.out.println(e.getMessage());
+      log.error(e.getMessage());
     }
     return null;
 
@@ -87,17 +91,17 @@ public class JdbcBookRepository implements BookRepository {
 
         Book book = setBook(resultSet);
 
-        System.out.println(book.getTitle() + " 책 조회 성공");
+        log.info(book.getTitle() + " 책 조회 성공");
 
         return book;
 
       } else {
-        System.out.println("책을 찾을 수 없습니다.");
+        log.info("책을 찾을 수 없습니다.");
       }
 
 
     } catch (SQLException e) {
-      System.out.println(e.getMessage());
+      log.error(e.getMessage());
     }
     return null;
 
@@ -115,15 +119,15 @@ public class JdbcBookRepository implements BookRepository {
       ResultSet resultSet = preparedStatement.executeQuery();
 
       if (resultSet.next()) {
-        System.out.println(isbn + " 은 이미 있는 책입니다.");
+        log.info(isbn + " 은 이미 있는 책입니다.");
         return true;
       } else {
-        System.out.println(isbn + "에 해당하는 책을 찾을 수 없습니다.");
+        log.info(isbn + "에 해당하는 책을 찾을 수 없습니다.");
         return false;
       }
 
     } catch (SQLException e) {
-      System.out.println(e.getMessage());
+      log.error(e.getMessage());
       return false;
     }
   }
@@ -139,7 +143,7 @@ public class JdbcBookRepository implements BookRepository {
       while (resultset.next()) {
         Book book = setBook(resultset);
 
-        System.out.println("모든 책 조회 성공");
+        log.info("모든 책 조회 성공");
 
         books.add(book);
       }
@@ -150,7 +154,7 @@ public class JdbcBookRepository implements BookRepository {
       return books;
 
     } catch (SQLException e) {
-      System.out.println(e.getMessage());
+      log.error(e.getMessage());
     }
     return null;
   }
