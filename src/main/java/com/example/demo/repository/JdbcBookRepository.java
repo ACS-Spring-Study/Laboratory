@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 public class JdbcBookRepository implements BookRepository {
   private static final String DATABASE_URL = System.getenv("DATABASE_URL");
   private static Connection connection;
+
+
   private static Statement statement;
   private static PreparedStatement preparedStatement;
 
