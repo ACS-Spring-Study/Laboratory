@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -48,7 +48,7 @@ public class JdbcBookRepository implements BookRepository {
   }
 
   @Override
-  public Book save(Book book) {
+  public Book save(Book book) throws SQLException {
     String sql = "Insert into Book values(NULL, ?, ?, ?, ?, ?)";
 
     try {
@@ -63,20 +63,20 @@ public class JdbcBookRepository implements BookRepository {
       preparedStatement.executeUpdate();
 
       log.info(book.getTitle() +" 책 등록 성공");
-
-      preparedStatement.close();
-
       return book;
 
     } catch (SQLException e) {
       log.error(e.getMessage());
+    } finally {
+      preparedStatement.close();
+
     }
     return null;
 
   }
 
   @Override
-  public Book findByISBN(String isbn) {
+  public Book findByISBN(String isbn) throws SQLException {
 
     String sql = "SELECT * from Book where isbn = ?";
 
@@ -102,13 +102,15 @@ public class JdbcBookRepository implements BookRepository {
 
     } catch (SQLException e) {
       log.error(e.getMessage());
+    } finally {
+      preparedStatement.close();
     }
     return null;
 
   }
 
   @Override
-  public boolean existsByIsbn(String isbn) {
+  public boolean existsByIsbn(String isbn) throws SQLException {
     String sql = "SELECT * from Book where isbn = ?";
 
     try {
@@ -129,11 +131,13 @@ public class JdbcBookRepository implements BookRepository {
     } catch (SQLException e) {
       log.error(e.getMessage());
       return false;
+    } finally {
+      preparedStatement.close();
     }
   }
 
   @Override
-  public List<Book> findAll() {
+  public List<Book> findAll() throws SQLException {
     List<Book> books = new ArrayList<>();
 
     try {
@@ -148,13 +152,12 @@ public class JdbcBookRepository implements BookRepository {
         books.add(book);
       }
 
-      resultset.close();
-      statement.close();
-
       return books;
 
     } catch (SQLException e) {
       log.error(e.getMessage());
+    } finally {
+      statement.close();
     }
     return null;
   }
