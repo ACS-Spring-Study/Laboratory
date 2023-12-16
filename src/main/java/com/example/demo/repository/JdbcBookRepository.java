@@ -28,11 +28,17 @@ public class JdbcBookRepository implements BookRepository {
   private Book setBook(ResultSet resultSet) throws SQLException {
     Book book = new Book();
 
-    book.setTitle(resultSet.getString("title"));
-    book.setIsbn(resultSet.getString("isbn"));
-    book.setAuthor(resultSet.getString("author"));
-    book.setCategory(BookCategory.valueOf(resultSet.getString("book_category")));
-    book.setStatus(BookStatus.valueOf(resultSet.getString("book_status")));
+    String title = resultSet.getString("title");
+    String isbn = resultSet.getString("isbn");
+    String author = resultSet.getString("author");
+    BookCategory bookCategory = BookCategory.valueOf(resultSet.getString("book_category"));
+    BookStatus bookStatus = BookStatus.valueOf(resultSet.getString("book_status"));
+
+    book.setTitle(title);
+    book.setIsbn(isbn);
+    book.setAuthor(author);
+    book.setCategory(bookCategory);
+    book.setStatus(bookStatus);
 
     return book;
   }
