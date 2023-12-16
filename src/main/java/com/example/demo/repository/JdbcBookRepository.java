@@ -113,7 +113,7 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public boolean existsByIsbn(String isbn) {
-    String sql = "SELECT * from Book where isbn = ?";
+    String sql = "SELECT isbn EXISTS (SELECT isbn FROM book WHERE isbn = ?)";
 
     try {
       preparedStatement = connection.prepareStatement(sql);
