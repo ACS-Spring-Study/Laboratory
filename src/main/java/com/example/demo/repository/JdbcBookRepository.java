@@ -55,7 +55,7 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public Book save(Book book) {
-    String sql = "Insert into Book values(NULL, ?, ?, ?, ?, ?)";
+    String sql = "Insert into Book (title, isbn, author, book_category, book_status) values(?, ?, ?, ?, ?)";
 
     try {
       preparedStatement = connection.prepareStatement(sql);
@@ -76,9 +76,8 @@ public class JdbcBookRepository implements BookRepository {
 
     } catch (SQLException e) {
       log.error(e.getMessage());
+      throw new RuntimeException(e.getMessage());
     }
-    return null;
-
   }
 
   @Override
@@ -87,6 +86,8 @@ public class JdbcBookRepository implements BookRepository {
     String sql = "SELECT * from Book where isbn = ?";
 
     try {
+      Book book = new Book();
+
       preparedStatement = connection.prepareStatement(sql);
 
       preparedStatement.setString(1, isbn);
@@ -94,23 +95,20 @@ public class JdbcBookRepository implements BookRepository {
       ResultSet resultSet = preparedStatement.executeQuery();
 
       if (resultSet.next()) {
-
-        Book book = setBook(resultSet);
-
+        book = setBook(resultSet);
         log.info(book.getTitle() + " 책 조회 성공");
-
-        return book;
 
       } else {
         log.info("책을 찾을 수 없습니다.");
       }
 
+      return book;
+
 
     } catch (SQLException e) {
       log.error(e.getMessage());
+      throw new RuntimeException(e.getMessage());
     }
-    return null;
-
   }
 
   @Override
@@ -134,7 +132,7 @@ public class JdbcBookRepository implements BookRepository {
 
     } catch (SQLException e) {
       log.error(e.getMessage());
-      return false;
+      throw new RuntimeException(e.getMessage());
     }
   }
 
@@ -161,7 +159,7 @@ public class JdbcBookRepository implements BookRepository {
 
     } catch (SQLException e) {
       log.error(e.getMessage());
+      throw new RuntimeException(e.getMessage());
     }
-    return null;
   }
 }

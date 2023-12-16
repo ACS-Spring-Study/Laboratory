@@ -10,11 +10,11 @@ import java.util.List;
 @Repository
 public interface BookRepository {
 
-  Book save(Book book) throws SQLException;
+  Book save(Book book);
 
-  Book findByISBN(String isbn) throws SQLException;
+  Book findByISBN(String isbn);
 
-  boolean existsByIsbn(String isbn) throws SQLException;
+  boolean existsByIsbn(String isbn);
 
-  List<Book> findAll() throws SQLException;
+  List<Book> findAll();
 }
