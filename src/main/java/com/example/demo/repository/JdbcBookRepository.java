@@ -49,7 +49,7 @@ public class JdbcBookRepository implements BookRepository {
 
   @Override
   public Book save(Book book) {
-    String sql = "Insert into Book values(NULL, ?, ?, ?, ?, ?)";
+    String sql = "Insert into Book (title, isbn, author, book_category, book_status) values(?, ?, ?, ?, ?)";
 
     try {
       preparedStatement = connection.prepareStatement(sql);
