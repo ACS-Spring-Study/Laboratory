@@ -10,6 +10,7 @@ import com.example.demo.domain.entity.Book;
 import com.example.demo.domain.entity.BookCategory;
 import com.example.demo.domain.entity.BookStatus;
 import com.example.demo.repository.BookRepository;
+import com.example.demo.repository.JpaBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,8 @@ import java.util.List;
 @Service
 public class BookService {
 
-  @Qualifier("jdbcBookRepository")
   @Autowired
-  BookRepository bookRepository;
+  JpaBookRepository bookRepository;
 
   public BooksResponse registryBook(RegisterBookDTO registerBookDTO) {
     BooksResponse response;

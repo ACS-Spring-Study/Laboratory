@@ -44,13 +44,13 @@ public class JdbcBookRepository implements BookRepository {
   }
 
   public JdbcBookRepository(){
-    try {
-      connection = DriverManager.getConnection(DATABASE_URL);
-      statement = connection.createStatement();
-      log.info("DB Connection Succeed");
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+//    try {
+//      connection = DriverManager.getConnection(DATABASE_URL);
+//      statement = connection.createStatement();
+//      log.info("DB Connection Succeed");
+//    } catch (SQLException e) {
+//      throw new RuntimeException(e);
+//    }
   }
 
   @Override
