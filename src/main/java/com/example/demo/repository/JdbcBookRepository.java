@@ -68,7 +68,7 @@ public class JdbcBookRepository implements BookRepository {
     }catch(SQLException e){
       e.printStackTrace();
     }
-    return null;
+    return new Book();
   }
 
   @Override
@@ -192,48 +192,48 @@ public class JdbcBookRepository implements BookRepository {
   }
 
   @Override
-  public Book borrowBook(String isbn){
+  public Book borrowBook(String isbn) {
     try {
-      String sql = "update book set book_status = 'BORROWING' where isbn=? ";
+      String sql = "update book set book_status = ? where isbn=? ";
       preparedStatement = connection.prepareStatement(sql);
 
-      preparedStatement.setString(1, isbn);
-      rs = preparedStatement.executeQuery();
-      if(rs.next()){
+      preparedStatement.setString(1, String.valueOf(BookStatus.BORROWING));
+      preparedStatement.setString(2, isbn);
+
+      int row = preparedStatement.executeUpdate();
+
+      if (row > 0) {
         Book book = new Book();
-        book.setTitle(rs.getString("title"));
-        book.setIsbn(rs.getString("isbn"));
-        book.setAuthor(rs.getString("author"));
-        book.setCategory(BookCategory.valueOf(rs.getString("book_category")));
-        book.setStatus(BookStatus.valueOf(rs.getString("book_status")));
+        book.setIsbn(isbn);
+        book.setStatus(BookStatus.BORROWING);
         return book;
       }
-    }catch(SQLException e){
+    } catch (SQLException e) {
       e.printStackTrace();
     }
-    return null;
+    return new Book();
   }
 
   @Override
   public Book returnBook(String isbn){
     try {
-      String sql = "update book set book_status = 'AVAILABLE' where isbn=? ";
+      String sql = "update book set book_status = ? where isbn=? ";
       preparedStatement = connection.prepareStatement(sql);
 
-      preparedStatement.setString(1, isbn);
-      rs = preparedStatement.executeQuery();
-      if(rs.next()){
+      preparedStatement.setString(1, String.valueOf(BookStatus.AVAILABLE));
+      preparedStatement.setString(2, isbn);
+
+      int row = preparedStatement.executeUpdate();
+
+      if (row > 0) {
         Book book = new Book();
-        book.setTitle(rs.getString("title"));
-        book.setIsbn(rs.getString("isbn"));
-        book.setAuthor(rs.getString("author"));
-        book.setCategory(BookCategory.valueOf(rs.getString("book_category")));
-        book.setStatus(BookStatus.valueOf(rs.getString("book_status")));
+        book.setIsbn(isbn);
+        book.setStatus(BookStatus.BORROWING);
         return book;
       }
-    }catch(SQLException e){
+    } catch (SQLException e) {
       e.printStackTrace();
     }
-    return null;
+    return new Book();
   }
 }
