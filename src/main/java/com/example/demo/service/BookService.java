@@ -71,7 +71,7 @@ public class BookService {
     BooksResponse response;
 
     try {
-      Book findBook = bookRepository.findByISBN(isbn);
+      Book findBook = bookRepository.findByIsbn(isbn);
 
       List<BookResponse> books = new ArrayList<>();
 
@@ -257,7 +257,7 @@ public class BookService {
     OrderResponse response;
 
     try {
-      Book book = bookRepository.findByISBN(borrowBookDTO.getIsbn());
+      Book book = bookRepository.findByIsbn(borrowBookDTO.getIsbn());
 
       if (book.getStatus() == BookStatus.AVAILABLE) {
         book.setStatus(BookStatus.BORROWING);
@@ -286,7 +286,7 @@ public class BookService {
     OrderResponse response;
 
     try {
-      Book book = bookRepository.findByISBN(returnBookDTO.getIsbn());
+      Book book = bookRepository.findByIsbn(returnBookDTO.getIsbn());
 
       if (book.getStatus() == BookStatus.AVAILABLE) {
         throw new RuntimeException("Book is available!");
