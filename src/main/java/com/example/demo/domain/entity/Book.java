@@ -2,6 +2,8 @@ package com.example.demo.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,9 +36,11 @@ public class Book {
   @Column(name="author")
   String author;
 
+  @Enumerated(EnumType.STRING)
   @Column(name="book_category")
   BookCategory category;
 
+  @Enumerated(EnumType.STRING)
   @Column(name="book_status")
   BookStatus status;
 }
