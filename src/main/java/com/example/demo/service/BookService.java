@@ -11,6 +11,7 @@ import com.example.demo.domain.entity.BookCategory;
 import com.example.demo.domain.entity.BookStatus;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.JpaBookRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -247,6 +248,7 @@ public class BookService {
     return response;
   }
 
+  @Transactional
   public OrderResponse borrowBook(BorrowBookDTO borrowBookDTO) {
     OrderResponse response;
 
@@ -262,6 +264,7 @@ public class BookService {
             .isbn(book.getIsbn())
             .status(book.getStatus())
             .build();
+//        bookRepository.save(book);
       } else {
         throw new RuntimeException("Book is not available!");
       }
@@ -293,6 +296,7 @@ public class BookService {
             .isbn(book.getIsbn())
             .status(book.getStatus())
             .build();
+        bookRepository.save(book);
       }
     } catch (RuntimeException e) {
       response = OrderResponse
