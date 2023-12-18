@@ -214,11 +214,10 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = bookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findByCategory(category);
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
-        if (findBook.getCategory().equals(category)) {
           BookResponse bookResponse = BookResponse
               .builder()
               .title(findBook.getTitle())
@@ -229,7 +228,6 @@ public class BookService {
               .build();
 
           books.add(bookResponse);
-        }
 
       }
 
