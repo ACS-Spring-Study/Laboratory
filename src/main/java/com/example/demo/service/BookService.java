@@ -142,11 +142,10 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = bookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findByTitleContaining(title);
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
-        if (findBook.getTitle().contains(title)) {
           BookResponse bookResponse = BookResponse
               .builder()
               .title(findBook.getTitle())
@@ -155,9 +154,8 @@ public class BookService {
               .category(findBook.getCategory())
               .status(findBook.getStatus())
               .build();
-
           books.add(bookResponse);
-        }
+
       }
 
       response = BooksResponse
