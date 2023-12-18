@@ -176,11 +176,10 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = bookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findByAuthorContains(authorName);
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
-        if (findBook.getAuthor().contains(authorName)) {
           BookResponse bookResponse = BookResponse
               .builder()
               .title(findBook.getTitle())
@@ -191,7 +190,6 @@ public class BookService {
               .build();
 
           books.add(bookResponse);
-        }
       }
 
       response = BooksResponse
