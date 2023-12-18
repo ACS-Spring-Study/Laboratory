@@ -140,22 +140,20 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = bookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findByTitleContains(title);
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
-        if (findBook.getTitle().contains(title)) {
-          BookResponse bookResponse = BookResponse
-              .builder()
-              .title(findBook.getTitle())
-              .isbn(findBook.getIsbn())
-              .author(findBook.getAuthor())
-              .category(findBook.getCategory())
-              .status(findBook.getStatus())
-              .build();
+        BookResponse bookResponse = BookResponse
+            .builder()
+            .title(findBook.getTitle())
+            .isbn(findBook.getIsbn())
+            .author(findBook.getAuthor())
+            .category(findBook.getCategory())
+            .status(findBook.getStatus())
+            .build();
 
-          books.add(bookResponse);
-        }
+        books.add(bookResponse);
       }
 
       response = BooksResponse
