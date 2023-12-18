@@ -22,12 +22,12 @@ public class JdbcBookRepository implements BookRepository {
   private static ResultSet rs;
 
   public JdbcBookRepository(){
-    try {
-      connection = DriverManager.getConnection(DATABASE_URL);
-      statement = connection.createStatement();
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+//    try {
+//      connection = DriverManager.getConnection(DATABASE_URL);
+//      statement = connection.createStatement();
+//    } catch (SQLException e) {
+//      throw new RuntimeException(e);
+//    }
   }
 
   @Override
