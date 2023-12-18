@@ -182,7 +182,7 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = bookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findByAuthorContaining(authorName);
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
