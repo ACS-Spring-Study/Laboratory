@@ -10,6 +10,7 @@ import com.example.demo.domain.entity.Book;
 import com.example.demo.domain.entity.BookCategory;
 import com.example.demo.domain.entity.BookStatus;
 import com.example.demo.repository.JpaBookRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -143,7 +144,7 @@ public class BookService {
     BooksResponse response;
 
     try {
-      List<Book> findAllBook = bookRepository.findAll();
+      List<Book> findAllBook = bookRepository.findByTitleContaining(title);
       List<BookResponse> books = new ArrayList<>();
 
       for (Book findBook : findAllBook) {
@@ -253,7 +254,7 @@ public class BookService {
 
     return response;
   }
-
+  @Transactional
   public OrderResponse borrowBook(BorrowBookDTO borrowBookDTO) {
     OrderResponse response;
 
