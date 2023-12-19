@@ -29,5 +29,6 @@ public class Book {
 
   @Enumerated(EnumType.STRING)
   BookCategory category;
+  @Enumerated(EnumType.STRING)
   BookStatus status;
 }
